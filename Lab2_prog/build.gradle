@@ -1,0 +1,34 @@
+plugins {
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'com.github.johnrengelman.shadow'
+    repositories {
+        mavenCentral()
+    }
+}
+
+project(':lab2'){
+    apply plugin: 'application'
+    compileJava.options.encoding = 'UTF-8'
+    compileTestJava.options.encoding = 'UTF-8'
+    mainClassName = 'me.ifmo.Battleground'
+    dependencies {
+        implementation fileTree(dir: 'C:\\Users\\zavoe\\IdeaProjects\\Lab2_prog\\libs', include: ['Pokemon.jar'])
+    }
+    jar {
+        manifest {
+            attributes(
+                    'Main-Class': 'me.ifmo.Battleground'
+            )
+        }
+        from {
+            configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+        }
+    }
+    tasks.withType(JavaCompile).configureEach {
+        options.encoding = 'UTF-8'
+    }
+}
